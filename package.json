@@ -1,31 +1,58 @@
 {
-  "name": "variable-inspector",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "react": "^16.10.2",
-    "react-dom": "^16.10.2",
-    "react-scripts": "3.2.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+    "name": "variable-inspector",
+    "version": "0.1.0",
+    "private": true,
+    "main": "public/electron.js",
+    "dependencies": {
+        "@babel/preset-react": "^7.6.3",
+        "@hot-loader/react-dom": "^16.10.2",
+        "@material-ui/core": "^4.5.1",
+        "@material-ui/icons": "^4.5.1",
+        "@nivo/line": "^0.59.3",
+        "babel-loader": "^8.0.6",
+        "electron-devtools-installer": "^2.2.4",
+        "electron-is-dev": "^1.1.0",
+        "react": "^16.10.2",
+        "react-dom": "^16.10.2",
+        "react-redux": "^7.1.1",
+        "react-router-dom": "^5.1.2",
+        "react-scripts": "3.2.0",
+        "react-virtualized": "^9.21.1",
+        "react-xterm": "^2.0.4",
+        "redux": "^4.0.4",
+        "redux-devtools-extension": "^2.13.8",
+        "redux-thunk": "^2.3.0",
+        "reselect": "^4.0.0",
+        "styled-components": "^4.4.0"
+    },
+    "scripts": {
+        "start": "rescripts start",
+        "build": "rescripts build",
+        "test": "rescripts test",
+        "eject": "rescripts eject",
+        "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\""
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@rescripts/cli": "^0.0.13",
+        "@rescripts/rescript-env": "^0.0.11",
+        "concurrently": "^5.0.0",
+        "electron": "^6.0.12",
+        "electron-builder": "^21.2.0",
+        "wait-on": "^3.3.0"
+    }
 }
