@@ -1,72 +1,70 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { LineCanvas } from "@nivo/line";
 import {
-    selectSelectedVariable,
-    selectSelectedVariableName,
-    selectSelectedVariableForGraph
-} from "./selectors";
+    XYPlot,
+    VerticalGridLines,
+    HorizontalGridLines,
+    XAxis,
+    YAxis,
+    LineSeriesCanvas
+} from "react-vis";
 import { AutoSizer } from "react-virtualized";
+import styled from "styled-components";
+import Vector from "./Vector";
+import { selectVariablesForGraph } from "./selectors";
+import { SET_VARIABLE } from "./types";
+const Container = styled.div`
+    width: 100%;
+    height: 100%;
+`;
 
-const LineGraph = ({ row }) => {
-    const selectedVariable = useSelector(selectSelectedVariable(row));
-    const selectedVariableForGraph = useSelector(
-        selectSelectedVariableForGraph(row)
-    );
-    const selectedVariableName = useSelector(selectSelectedVariableName(row));
+const LineGraph = ({ selectedVariables }) => {
+    useEffect(() => {
+        const var1 = new Vector({ data: [1, 2, 4], label: "var1" });
+        window["var1"] = var1;
+        window.dispatch({ type: SET_VARIABLE, payload: var1 });
+        const var2 = new Vector({ data: [4, 5, 1], label: "var2" });
+        window["var2"] = var2;
+        window.dispatch({ type: SET_VARIABLE, payload: var2 });
+    }, []);
 
-    const data = Array.isArray(selectedVariableForGraph)
-        ? selectedVariableForGraph
-        : false;
-    const commonProperties = {
-        margin: { top: 20, right: 20, bottom: 60, left: 80 },
-        data: [{ id: selectedVariableName || "", data }],
-        enablePoints: false,
-        enableGridX: false
-    };
+    const data = [];
 
-    let tickValues = 0;
-    const tickCount = 10;
-    const elementLength = (data.length / tickCount + "").length;
-    const mod = Math.pow(10, elementLength - 2);
+    const variables = useSelector(selectVariablesForGraph(selectedVariables));
+    console.log(variables);
 
-    let min = 0,
-        max = 100;
-    if (data) {
-        tickValues = new Array(tickCount + 1)
-            .fill(0)
-            .map(
-                (e, i) =>
-                    data.length * (i / tickCount) -
-                    ((data.length * (i / tickCount)) % 100)
-            );
-        min = Math.min(...selectedVariable);
-        max = Math.max(...selectedVariable);
-    }
-
-    return (
-        <>
-            {data && (
+    if (data !== false) {
+        return (
+            <Container>
                 <AutoSizer>
-                    {({ height, width }) => (
-                        <LineCanvas
-                            height={height}
-                            width={width}
-                            indexBy="x"
-                            axisBottom={{ tickValues }}
-                            yScale={{
-                                type: "linear",
-                                stacked: false,
-                                min,
-                                max
-                            }}
-                            {...commonProperties}
-                        />
-                    )}
+                    {({ height, width }) => {
+                        return (
+                            <XYPlot
+                                height={height}
+                                width={width}
+                                margin={{ left: 50 }}
+                            >
+                                <VerticalGridLines />
+                                <HorizontalGridLines />
+                                <XAxis />
+                                <YAxis />
+                                {Object.keys(variables).map((e, i) => {
+                                    return (
+                                        <LineSeriesCanvas
+                                            key={i}
+                                            data={variables[e]}
+                                        />
+                                    );
+                                })}
+                            </XYPlot>
+                        );
+                    }}
                 </AutoSizer>
-            )}
-        </>
-    );
+            </Container>
+        );
+    } else {
+        return null;
+    }
 };
 
 export default LineGraph;

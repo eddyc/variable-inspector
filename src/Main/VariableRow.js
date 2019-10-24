@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
+import DeleteIcon from "@material-ui/icons/Delete";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import ShowCartIcon from "@material-ui/icons/ShowChart";
-import { setSelectedVariable } from "./actions";
+import Checkbox from "@material-ui/core/Checkbox";
 import LineGraph from "./LineGraph";
+import IconButton from "@material-ui/core/IconButton";
+import { deleteVariable } from "./actions";
+import { useDispatch } from "react-redux";
 const VariableRowContainer = styled.div`
     grid-row: ${props => props.row + 2};
     display: grid;
@@ -24,7 +27,6 @@ const VariableListContainer = styled.div`
     height: 100%;
     background: white;
     overflow: scroll;
-    ${"" /* box-shadow: inset 0px 0px 13px 2px #969696; */}
 `;
 
 const VariableGraphContainer = styled.div`
@@ -40,12 +42,8 @@ const StyledListItem = styled(ListItem)`
     }
 `;
 const VariableRow = ({ row, variables }) => {
-    const [selectedIndex, setSelectedIndex] = React.useState(false);
+    const [selectedVariables, setSelectedVariables] = useState([]);
     const dispatch = useDispatch();
-    const handleListItemClick = (event, index) => {
-        setSelectedIndex(index);
-    };
-
     return (
         <VariableRowContainer row={row}>
             <VariableListContainer>
@@ -56,23 +54,50 @@ const VariableRow = ({ row, variables }) => {
                                 <StyledListItem
                                     button
                                     key={i}
-                                    selected={selectedIndex === i}
                                     onClick={event => {
-                                        handleListItemClick(event, i);
-                                        dispatch(setSelectedVariable(row, e));
+                                        if (selectedVariables.includes(e)) {
+                                            selectedVariables.splice(
+                                                selectedVariables.indexOf(e),
+                                                1
+                                            );
+                                        } else {
+                                            selectedVariables.push(e);
+                                        }
+
+                                        setSelectedVariables([
+                                            ...selectedVariables
+                                        ]);
                                     }}
                                 >
                                     <ListItemIcon>
-                                        <ShowCartIcon />
+                                        <Checkbox
+                                            edge="start"
+                                            checked={selectedVariables.includes(
+                                                e
+                                            )}
+                                            tabIndex={-1}
+                                            disableRipple
+                                        />
                                     </ListItemIcon>
                                     <ListItemText primary={e} />
+                                    <ListItemSecondaryAction>
+                                        <IconButton
+                                            edge="end"
+                                            aria-label="delete"
+                                            onClick={() => {
+                                                dispatch(deleteVariable(e));
+                                            }}
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </ListItemSecondaryAction>
                                 </StyledListItem>
                             );
                         })}
                 </List>
             </VariableListContainer>
             <VariableGraphContainer>
-                <LineGraph row={row} />
+                <LineGraph selectedVariables={selectedVariables} />
             </VariableGraphContainer>
         </VariableRowContainer>
     );

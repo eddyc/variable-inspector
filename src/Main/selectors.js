@@ -19,46 +19,34 @@ export const selectVariableNames = createSelector(
     }
 );
 
-export const selectSelectedVariable = row => {
+export const selectVariable = variable => {
     return createSelector(
-        [selectSelectedVariables, selectVariables],
-        (selectedVariables, variables) => {
-            if (typeof selectedVariables[row] === "undefined") {
+        [selectVariables],
+        variables => {
+            if (typeof variables[variable] === "undefined") {
                 return false;
             } else {
-                return variables[selectedVariables[row]];
+                return variables[variable];
             }
         }
     );
 };
 
-export const selectSelectedVariableForGraph = row => {
+export const selectVariablesForGraph = selectedVariables => {
     return createSelector(
-        [selectSelectedVariable(row)],
-        variable => {
-            if (typeof variable === "undefined" || variable === false) {
-                return false;
-            } else {
-                const result = new Array(...variable).map((e, i) => ({
-                    x: i,
-                    y: e
-                }));
+        [selectVariables],
+        variables => {
+            const result = {};
 
-                return result;
-            }
-        }
-    );
-};
+            selectedVariables.map(e => {
+                if (typeof variables[e] !== "undefined") {
+                    const variable = new Array(...variables[e]);
+                    result[e] = variable.map((f, i) => ({ x: i, y: f }));
+                }
+                return null;
+            });
 
-export const selectSelectedVariableName = row => {
-    return createSelector(
-        [selectSelectedVariables],
-        selectedVariables => {
-            if (typeof selectedVariables[row] === "undefined") {
-                return false;
-            } else {
-                return selectedVariables[row];
-            }
+            return result;
         }
     );
 };

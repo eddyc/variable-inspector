@@ -1,8 +1,7 @@
-import { SET_VARIABLE, SET_SELECTED_VARIABLE, SET_ROW_COUNT } from "./types";
+import { SET_VARIABLE, DELETE_VARIABLE, SET_ROW_COUNT } from "./types";
 
 const INITIAL_STATE = {
     variables: false,
-    selectedVariables: {},
     rowCount: 1
 };
 
@@ -26,19 +25,19 @@ export default (state = INITIAL_STATE, action) => {
                 };
             }
         }
-        case SET_SELECTED_VARIABLE: {
-            return {
-                ...state,
-                selectedVariables: {
-                    ...state.selectedVariables,
-                    [action.payload.row]: action.payload.variable
-                }
-            };
-        }
         case SET_ROW_COUNT: {
             return {
                 ...state,
                 rowCount: action.payload
+            };
+        }
+        case DELETE_VARIABLE: {
+            const variables = { ...state.variables };
+            delete variables[action.payload];
+
+            return {
+                ...state,
+                variables
             };
         }
         default: {

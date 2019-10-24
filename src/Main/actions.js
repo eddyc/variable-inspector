@@ -1,6 +1,6 @@
 import net from "net";
 import Vector from "./Vector";
-import { SET_VARIABLE, SET_SELECTED_VARIABLE, SET_ROW_COUNT } from "./types";
+import { SET_VARIABLE, SET_ROW_COUNT, DELETE_VARIABLE } from "./types";
 export const startVariableListener = () => {
     return dispatch => {
         const server = net.createServer();
@@ -70,12 +70,14 @@ export const startVariableListener = () => {
     };
 };
 
-export const setSelectedVariable = (row, variable) => {
-    return { type: SET_SELECTED_VARIABLE, payload: { row, variable } };
+export const setRowCount = count => {
+    return (dispatch, getState) => {
+        if (count > 0) {
+            dispatch({ type: SET_ROW_COUNT, payload: count });
+        }
+    };
 };
 
-export const setRowCount = count => {
-    if (count > 0) {
-        return { type: SET_ROW_COUNT, payload: count };
-    }
+export const deleteVariable = variable => {
+    return { type: DELETE_VARIABLE, payload: variable };
 };
