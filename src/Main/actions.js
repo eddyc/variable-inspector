@@ -1,6 +1,11 @@
 import net from "net";
 import Vector from "./Vector";
-import { SET_VARIABLE, SET_ROW_COUNT, DELETE_VARIABLE } from "./types";
+import {
+    SET_VARIABLE,
+    SET_ROW_COUNT,
+    DELETE_VARIABLE,
+    SET_SHOW_CONSOLE
+} from "./types";
 export const startVariableListener = () => {
     return dispatch => {
         const server = net.createServer();
@@ -80,4 +85,8 @@ export const setRowCount = count => {
 
 export const deleteVariable = variable => {
     return { type: DELETE_VARIABLE, payload: variable };
+};
+
+export const setShowConsole = condition => {
+    return { type: SET_SHOW_CONSOLE, payload: condition };
 };

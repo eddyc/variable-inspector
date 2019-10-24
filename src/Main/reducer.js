@@ -1,8 +1,14 @@
-import { SET_VARIABLE, DELETE_VARIABLE, SET_ROW_COUNT } from "./types";
+import {
+    SET_VARIABLE,
+    DELETE_VARIABLE,
+    SET_ROW_COUNT,
+    SET_SHOW_CONSOLE
+} from "./types";
 
 const INITIAL_STATE = {
     variables: false,
-    rowCount: 1
+    rowCount: 1,
+    showConsole: true
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -38,6 +44,12 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 variables
+            };
+        }
+        case SET_SHOW_CONSOLE: {
+            return {
+                ...state,
+                showConsole: action.payload
             };
         }
         default: {

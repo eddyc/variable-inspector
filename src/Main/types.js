@@ -1,3 +1,4 @@
 export const SET_VARIABLE = "SET_VARIABLE";
 export const SET_ROW_COUNT = "SET_ROW_COUNT";
 export const DELETE_VARIABLE = "DELETE_VARIABLE";
+export const SET_SHOW_CONSOLE = "SET_SHOW_CONSOLE";

@@ -10,30 +10,16 @@ import {
 } from "react-vis";
 import { AutoSizer } from "react-virtualized";
 import styled from "styled-components";
-import Vector from "./Vector";
 import { selectVariablesForGraph } from "./selectors";
-import { SET_VARIABLE } from "./types";
 const Container = styled.div`
     width: 100%;
     height: 100%;
 `;
 
 const LineGraph = ({ selectedVariables }) => {
-    useEffect(() => {
-        const var1 = new Vector({ data: [1, 2, 4], label: "var1" });
-        window["var1"] = var1;
-        window.dispatch({ type: SET_VARIABLE, payload: var1 });
-        const var2 = new Vector({ data: [4, 5, 1], label: "var2" });
-        window["var2"] = var2;
-        window.dispatch({ type: SET_VARIABLE, payload: var2 });
-    }, []);
-
-    const data = [];
-
     const variables = useSelector(selectVariablesForGraph(selectedVariables));
-    console.log(variables);
 
-    if (data !== false) {
+    if (Object.keys(variables).length > 0) {
         return (
             <Container>
                 <AutoSizer>

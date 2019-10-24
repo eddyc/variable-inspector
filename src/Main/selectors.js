@@ -4,12 +4,12 @@ export const selectVariables = ({ MainReducer }) => {
     return MainReducer.variables;
 };
 
-export const selectSelectedVariables = ({ MainReducer }) => {
-    return MainReducer.selectedVariables;
-};
-
 export const selectRowcount = ({ MainReducer }) => {
     return MainReducer.rowCount;
+};
+
+export const selectShowConsole = ({ MainReducer }) => {
+    return MainReducer.showConsole;
 };
 
 export const selectVariableNames = createSelector(
