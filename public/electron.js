@@ -29,7 +29,8 @@ const createWindow = async () => {
         height: 680,
         webPreferences: {
             nodeIntegration: true
-        }
+        },
+        title: "variable-inspector"
     });
     mainWindow.loadURL(
         isDev

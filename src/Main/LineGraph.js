@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import {
     XYPlot,
@@ -6,7 +6,8 @@ import {
     HorizontalGridLines,
     XAxis,
     YAxis,
-    LineSeriesCanvas
+    LineSeriesCanvas,
+    VerticalBarSeries
 } from "react-vis";
 import { AutoSizer } from "react-virtualized";
 import styled from "styled-components";
@@ -18,6 +19,8 @@ const Container = styled.div`
 
 const LineGraph = ({ selectedVariables }) => {
     const variables = useSelector(selectVariablesForGraph(selectedVariables));
+
+    console.log(variables);
 
     if (Object.keys(variables).length > 0) {
         return (
@@ -35,12 +38,21 @@ const LineGraph = ({ selectedVariables }) => {
                                 <XAxis />
                                 <YAxis />
                                 {Object.keys(variables).map((e, i) => {
-                                    return (
-                                        <LineSeriesCanvas
-                                            key={i}
-                                            data={variables[e]}
-                                        />
-                                    );
+                                    if (variables[e].length === 1) {
+                                        return (
+                                            <VerticalBarSeries
+                                                key={i}
+                                                data={variables[e]}
+                                            />
+                                        );
+                                    } else {
+                                        return (
+                                            <LineSeriesCanvas
+                                                key={i}
+                                                data={variables[e]}
+                                            />
+                                        );
+                                    }
                                 })}
                             </XYPlot>
                         );

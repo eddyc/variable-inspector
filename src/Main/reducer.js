@@ -1,8 +1,10 @@
 import {
-    SET_VARIABLE,
+    SET_EXTERNAL_VARIABLE,
     DELETE_VARIABLE,
     SET_ROW_COUNT,
-    SET_SHOW_CONSOLE
+    SET_SHOW_CONSOLE,
+    ADD_DERIVED,
+    SET_DERIVED
 } from "./types";
 
 const INITIAL_STATE = {
@@ -13,12 +15,22 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case SET_VARIABLE: {
+        case SET_DERIVED: {
+            return {
+                ...state,
+                variables: {
+                    ...state.variables,
+                    [action.payload.label]: action.payload.variable
+                }
+            };
+        }
+        case ADD_DERIVED:
+        case SET_EXTERNAL_VARIABLE: {
             if (state.variables === false) {
                 return {
                     ...state,
                     variables: {
-                        [action.payload.label]: action.payload.data
+                        [action.payload.label]: action.payload
                     }
                 };
             } else {
@@ -26,7 +38,7 @@ export default (state = INITIAL_STATE, action) => {
                     ...state,
                     variables: {
                         ...state.variables,
-                        [action.payload.label]: action.payload.data
+                        [action.payload.label]: action.payload
                     }
                 };
             }
