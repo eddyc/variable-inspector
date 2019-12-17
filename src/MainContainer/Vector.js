@@ -56,6 +56,17 @@ export default class Vector {
             return vectorVectorMap(this, input, (a, b) => a * b, "*");
         }
     };
+    divide = input => {
+        if (typeof input === "number") {
+            return singleVectorMap(
+                this,
+                a => a / input,
+                `${this.label}/${input}`
+            );
+        } else if (typeof input === "object") {
+            return vectorVectorMap(this, input, (a, b) => a / b, "/");
+        }
+    };
     add = input => {
         if (typeof input === "number") {
             return singleVectorMap(
@@ -110,7 +121,7 @@ const vectorVectorMap = (
     const dataB = inputB.data;
     if (dataA.length !== dataB.length) {
         console.error("Vector sizes incompatible");
-        return;
+        return false;
     }
 
     return new Vector({

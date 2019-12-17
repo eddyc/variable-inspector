@@ -1,5 +1,5 @@
 import { setRowCount } from "./actions";
-import "./Vector";
+import "../MainContainer/Vector";
 
 window.setRowCount = count => {
     window.dispatch(setRowCount(count));

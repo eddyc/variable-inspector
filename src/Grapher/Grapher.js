@@ -1,17 +1,15 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { startVariableListener } from "./actions";
+import React from "react";
+import { useSelector } from "react-redux";
 import {
     selectVariableNames,
-    selectRowcount,
-    selectShowConsole
-} from "./selectors";
+    selectRowcount
+} from "../MainContainer/selectors";
 import styled from "styled-components";
 import VariableRow from "./VariableRow";
 import Toolbar from "./Toolbar";
-const MainContainer = styled.div`
+const GrapherContainer = styled.div`
     width: 100%;
-    height: calc(100vh - 2px);
+    height: calc(100vh - 100px);
     background: #969696;
     display: grid;
     grid-template-rows: ${props =>
@@ -21,15 +19,11 @@ const MainContainer = styled.div`
     border: 1px solid #969696;
 `;
 
-const VariableListener = props => {
-    const dispatch = useDispatch();
+const Grapher = () => {
     const variableNames = useSelector(selectVariableNames);
     const rowCount = useSelector(selectRowcount);
-    useEffect(() => {
-        dispatch(startVariableListener());
-    }, [dispatch]);
     return (
-        <MainContainer rowCount={rowCount}>
+        <GrapherContainer rowCount={rowCount}>
             {rowCount > 0 &&
                 new Array(rowCount).fill(0).map((e, i) => {
                     return (
@@ -41,8 +35,8 @@ const VariableListener = props => {
                     );
                 })}
             <Toolbar rowCount={rowCount} />
-        </MainContainer>
+        </GrapherContainer>
     );
 };
 
-export default VariableListener;
+export default Grapher;

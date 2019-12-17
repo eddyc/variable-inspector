@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Fab } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-import { addDerived } from "./actions";
+import { addDerived } from "../MainContainer/actions";
 const Container = styled.div`
     grid-row: ${props => props.rowCount + 1};
     background: white;

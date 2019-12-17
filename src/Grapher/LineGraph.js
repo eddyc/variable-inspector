@@ -11,7 +11,7 @@ import {
 } from "react-vis";
 import { AutoSizer } from "react-virtualized";
 import styled from "styled-components";
-import { selectVariablesForGraph } from "./selectors";
+import { selectVariablesForGraph } from "../MainContainer/selectors";
 const Container = styled.div`
     width: 100%;
     height: 100%;

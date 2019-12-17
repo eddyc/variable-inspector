@@ -4,11 +4,37 @@ import {
     SET_EXTERNAL_VARIABLE,
     SET_ROW_COUNT,
     DELETE_VARIABLE,
-    SET_SHOW_CONSOLE,
     ADD_DERIVED,
-    SET_DERIVED
+    SET_DERIVED,
+    SET_WEBSOCKET_VARIABLE
 } from "./types";
-export const startVariableListener = () => {
+
+import { selectWSVariables } from "./selectors";
+
+export const setWebSocketValue = (key, value) => {
+    return (dispatch, getState) => {
+        const store = getState();
+        const wsVariables = selectWSVariables(store);
+
+        if (typeof wsVariables[key] === "undefined") {
+            const ws = new WebSocket("ws://127.0.0.1:9999", `${key}`);
+
+            ws.onopen = () => {
+                dispatch({
+                    type: SET_WEBSOCKET_VARIABLE,
+                    payload: { key, ws }
+                });
+
+                ws.send(value);
+            };
+        } else {
+            const { ws } = wsVariables[key];
+            ws.send(value);
+        }
+    };
+};
+
+export const startSocketListener = () => {
     return dispatch => {
         const server = net.createServer();
 
@@ -20,7 +46,7 @@ export const startVariableListener = () => {
 
         const setVariable = jsonString => {
             const result = JSON.parse(jsonString);
-            result.data = new Float64Array(result.data);
+            result.data = new Array(...result.data);
             window[result.label] = new Vector({ ...result });
             console.log(`Received: ${result.label}`);
             dispatch({
@@ -92,10 +118,6 @@ export const deleteVariable = variable => {
     return { type: DELETE_VARIABLE, payload: variable };
 };
 
-export const setShowConsole = condition => {
-    return { type: SET_SHOW_CONSOLE, payload: condition };
-};
-
 export const addDerived = () => {
     return dispatch => {
         const label = `derived.${Date.now()}`;
@@ -112,7 +134,7 @@ export const addDerived = () => {
     };
 };
 
-export const setDerivedData = (label, data) => {
+export const editDerived = (label, data) => {
     return dispatch => {
         window[label] = new Vector({
             ...window[label],
