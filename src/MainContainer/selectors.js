@@ -43,8 +43,7 @@ export const selectVariablesForGraph = selectedVariables => {
             selectedVariables.map(e => {
                 if (
                     typeof variables[e] !== "undefined" &&
-                    variables[e].type === "external" &&
-                    e.startsWith("vec")
+                    variables[e].type === "external"
                 ) {
                     const variableData = Array.isArray(variables[e].data)
                         ? variables[e].data

@@ -38,7 +38,8 @@ const Controls = () => {
             <KnobSection>
                 <Knob
                     min={0}
-                    max={710}
+                    max={56}
+                    step={1 / 200}
                     value={knobValue}
                     fgColor="#3f51b5"
                     onChange={value => {
